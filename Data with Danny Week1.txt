@@ -1,0 +1,134 @@
+/* --------------------
+   Case Study Questions
+   --------------------*/
+
+-- 1. What is the total amount each customer spent at the restaurant?
+WITH totals AS
+	(SELECT
+	customer_id,
+    product_name,
+    COUNT(product_name) as quantity,
+    m1.price,
+    (COUNT(product_name)*m1.price) AS amount_bought
+FROM sales
+     LEFT JOIN menu AS m1 USING (product_id)
+GROUP BY customer_id, product_name, m1.price)
+
+SELECT 
+	customer_id,
+    SUM(amount_bought) AS total_purchases
+FROM 
+	totals
+WHERE customer_id IS NOT NULL
+GROUP BY customer_id
+ORDER BY customer_id;
+
+
+		
+-- 2. How many days has each customer visited the restaurant?
+SELECT
+	customer_id,
+    COUNT(order_date) AS no_of_visits
+FROM
+	sales
+GROUP BY customer_id
+ORDER BY customer_id;
+ 
+-- 3. What was the first item from the menu purchased by each customer?
+SELECT
+	DISTINCT customer_id,
+    FIRST_VALUE(product_name) OVER(PARTITION BY customer_id ORDER BY order_date ASC) AS first_buy
+FROM sales
+LEFT JOIN menu USING (product_id)
+ORDER BY customer_id;
+-- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+SELECT
+	product_name,
+    COUNT (product_id) AS number_bought
+FROM sales
+LEFT JOIN menu
+USING (product_id)
+GROUP BY product_name
+ORDER BY number_bought DESC
+LIMIT 1;
+-- 5. Which item was the most popular for each customer?
+WITH items_bought AS (
+  	SELECT
+	customer_id,
+    product_name,
+    COUNT(product_name) as quantity
+FROM sales
+LEFT JOIN menu
+USING (product_id)
+GROUP BY customer_id, product_name
+ORDER BY quantity)
+SELECT 
+	DISTINCT customer_id,
+    FIRST_VALUE (product_name) OVER(PARTITION BY customer_id ORDER BY quantity DESC) AS first_buy
+FROM items_bought;
+	   
+-- 6. Which item was purchased first by the customer after they became a member?
+SELECT 
+	DISTINCT customer_id,
+    FIRST_VALUE(product_name) OVER(PARTITION BY customer_id ORDER BY order_date) AS first_buy
+FROM sales
+LEFT JOIN menu USING (product_id)
+LEFT JOIN members USING (customer_id)
+WHERE order_date>join_date;
+-- 7. Which item was purchased just before the customer became a member?
+WITH pre_membership AS (SELECT *
+FROM sales
+LEFT JOIN menu USING (product_id)
+LEFT JOIN members USING (customer_id)
+WHERE order_date<join_date
+ORDER BY order_date DESC)
+SELECT DISTINCT customer_id,
+	FIRST_VALUE(product_name) OVER(PARTITION BY customer_id) AS last_buy
+FROM pre_membership;
+
+-- 8. What is the total items and amount spent for each member before they became a member?
+WITH pre_membership AS (SELECT *
+FROM sales
+LEFT JOIN menu USING (product_id)
+LEFT JOIN members USING (customer_id)
+WHERE order_date<join_date)
+SELECT customer_id,
+		COUNT(*) AS total_items,
+        SUM(price) AS amount_spent
+FROM pre_membership
+GROUP BY customer_id;
+-- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+WITH all_sales AS (SELECT *
+FROM sales
+LEFT JOIN menu USING (product_id)
+LEFT JOIN members USING (customer_id)
+WHERE order_date >= join_date),
+                         
+	pointstable AS(	SELECT customer_id,
+		SUM(price)*10 AS points,
+        CASE WHEN product_name = 'sushi'
+         THEN 10
+		ELSE 0 END AS sushi_points
+FROM all_sales
+GROUP BY customer_id, product_name)
+SELECT customer_id,
+SUM(points) + SUM(sushi_points) aS total_points
+FROM pointstable
+GROUP BY customer_id;
+
+-- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+ 
+WITH all_sales AS 
+	(SELECT *,
+     CASE WHEN order_date >= join_date AND order_date<= join_date + 7 THEN price*20
+    	WHEN order_date > join_date THEN price*10 END AS points,
+     CASE WHEN product_name = 'sushi' THEN price*10
+     ELSE 0 END AS sushi_points
+    FROM sales
+LEFT JOIN menu USING (product_id)
+LEFT JOIN members USING (customer_id))
+SELECT customer_id,
+		SUM(points) + SUM(sushi_points) AS total_points
+FROM all_sales
+GROUP BY customer_id
+LIMIT 2;
