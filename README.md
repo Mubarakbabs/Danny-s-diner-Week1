@@ -2,6 +2,8 @@
 
 ### This repo details my attempts at solving Data with Danny's [#8weekSQLchallenge](https://8weeksqlchallenge.com/)
 
-A brief introduction of each problem set follows below, and the full description is also linked
+[Week 1: Danny's Diner](https://github.com/Mubarakbabs/Danny-s-diner-Week1/blob/main/Week%201.md)
+
+[Week 2: Pizza Runner](https://github.com/Mubarakbabs/Danny-s-diner-Week1/blob/main/Week%202.md)
 
 
