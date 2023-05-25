@@ -25,4 +25,4 @@ Danny has shared with you 3 key datasets for this case study:
 You can inspect the entity relationship diagram below.
 ![image](https://user-images.githubusercontent.com/71897261/234846335-4b77cd07-9a71-4a93-b6a0-4beb66df6145.png)
 
-[You can find my response to this case study here](Week 1 Solution.sql)
+[You can find my response to this case study here](https://github.com/Mubarakbabs/SQL-Data-With-Danny-8-week-SQL-Challenge/blob/main/Week%201%20Solution.sql)
