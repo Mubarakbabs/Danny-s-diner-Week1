@@ -21,4 +21,16 @@ He has prepared for us an entity relationship diagram of his database design but
 All datasets exist within the pizza_runner database schema - be sure to include this reference within your SQL scripts as you start exploring the data and answering the case study questions.
 ![entity relationship diagram showing the relationship between the tables in pizza runner's database](https://user-images.githubusercontent.com/71897261/234885298-3cc82898-905d-4d32-b92f-fb81891eb47d.png)
 
+## My Solution
+There are six separate files containing the solutions to the case. Four for each of the four sections included in the case, then two more files to set up the database and for data cleaning operations. Note that all queries are written in T-SQL
+
+[DDL Queries](): The DDL Queries are the same queries included in the case introduction above. However, I had to convert them to T-SQL first so they can work in Microsoft's SQL Server
+[Data Cleaning]: Not all the data was fit for exploration. I separated all code that made changes to the database tables and stored them in this file
+A. [Pizza Metrics]
+B. [Runners Optimization]
+C. [Ingredient Optimisation]
+D. [Pricing and Rating]
+
+
+
 Find my response to this case study here
