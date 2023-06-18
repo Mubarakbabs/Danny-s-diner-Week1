@@ -1,0 +1,71 @@
+ -- A. Pizza Metrics
+-- -- How many pizzas were ordered?
+ --SELECT COUNT(order_id)
+ --FROM pizza_runner.customer_orders;
+ ---- How many unique customer orders were made?
+ --SELECT COUNT (DISTINCT order_id)
+ --FROM pizza_runner.customer_orders;
+ ---- How many successful orders were delivered by each runner?
+ --SELECT COUNT(DISTINCT c.order_id)
+ --FROM pizza_runner.customer_orders c
+ --INNER JOIN pizza_runner.runner_orders r
+ --ON c.order_id = r.order_id
+ --WHERE pickup_time IS NOT NULL;
+ ---- How many of each type of pizza was delivered?
+---- the text type in the pizza_names column cannot be used in GROUP BY so I had to alter the data type
+---- ALTER TABLE pizza_runner.pizza_names
+----ALTER COLUMN pizza_name varchar(10);
+
+ --SELECT n.pizza_name, COUNT(c.order_id) AS n_pizzas
+ --FROM pizza_runner.customer_orders c
+ --JOIN pizza_runner.pizza_names n
+ --ON c.pizza_id = n.pizza_id
+ --GROUP BY pizza_name;
+
+---- How many Vegetarian and Meatlovers were ordered by each customer?
+ --SELECT customer_id,
+ --SUM(CASE WHEN pizza_id = 1 THEN 1 ELSE 0 END) AS Vegetarian,
+ --SUM(CASE WHEN pizza_id = 2 THEN 1 ELSE 0 END) AS Meatlovers
+ --FROM pizza_runner.customer_orders
+ --GROUP BY customer_id
+ 
+---- What was the maximum number of pizzas delivered in a single order?
+-- SELECT TOP(1) order_id, COUNT(pizza_id) AS n_pizzas
+-- FROM pizza_runner.customer_orders
+-- GROUP BY order_id
+-- ORDER BY n_pizzas DESC;
+-- -- For each customer, how many delivered pizzas had at least 1 change and how many had no changes?
+-- WITH change AS (SELECT customer_id, COUNT(pizza_id) AS g1
+-- FROM pizza_runner.customer_orders
+-- WHERE ARRAY_LENGTH(extras) > 0 OR ARRAY_LENGTH(exclusions) > 0
+-- GROUP BY customer_id),
+-- no_change AS (SELECT customer_id, COUNT(pizza_id) AS none
+-- FROM pizza_runner.customer_orders
+-- WHERE ARRAY_LENGTH(extras) = 0 AND ARRAY_LENGTH(exclusions) = 0
+-- GROUP BY customer_id)
+-- SELECT customer_id, 
+--   COALESCE(g1, 0) AS changed,
+--   COALESCE(none, 0) AS unchanged
+-- FROM change
+-- FULL JOIN no_change
+-- USING (customer_id);
+-- -- How many pizzas were delivered that had both exclusions and extras?
+-- SELECT COUNT(pizza_id) AS exclusions_extras
+-- FROM pizza_runner.customer_orders
+-- JOIN pizza_runner.runner_orders
+-- USING (order_id)
+-- WHERE ARRAY_LENGTH(extras) > 0 
+--   AND ARRAY_LENGTH(exclusions) > 0
+--   AND cancellation IS NULL;
+
+-- -- What was the total volume of pizzas ordered for each hour of the day?
+-- SELECT HOUR(order_time) AS hour, COUNT(*)
+-- FROM pizza_runner.customer_orders
+-- GROUP BY hour
+-- ORDER BY hour;
+
+---- What was the volume of orders for each day of the week?
+--SELECT EXTRACT(DAYOFWEEK from order_time) AS day, COUNT(*)
+--FROM pizza_runner.customer_orders
+--GROUP BY day
+--ORDER BY day
