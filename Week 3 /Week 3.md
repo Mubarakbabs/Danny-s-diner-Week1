@@ -27,4 +27,4 @@ My solution consists of three files:
 
 2. [Data Analysis](https://github.com/Mubarakbabs/SQL-Data-With-Danny-8-week-SQL-Challenge/blob/main/Week%203%20/Data%20Analysis.sql). This contains the solutions to the questions about the dataset in Section 2 of the case
   
-3. [Challenge Payment](Week 3 /Challenge Payment.sql). This contains a 200 line CTE to solve the challenge question for this week's challenge. It was the most interesting aspect of the solution
+3. [Challenge Payment](https://github.com/Mubarakbabs/SQL-Data-With-Danny-8-week-SQL-Challenge/blob/main/Week%203%20/Challenge%20Payment.sql). This contains a 200-line CTE to solve the challenge question for this week's challenge. It was the most interesting aspect of the solution
