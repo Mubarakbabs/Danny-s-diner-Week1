@@ -1,4 +1,11 @@
-# Introduction
+# Week 4: Data Bank
+
+This is a brief description of the Week 4 task. You can read the full description [here](https://8weeksqlchallenge.com/case-study-4/)
+
+![image](https://github.com/Mubarakbabs/SQL-Data-With-Danny-8-week-SQL-Challenge/assets/71897261/df60c8e7-c3c7-4300-9ce0-9d915e294eb3)
+
+
+## Introduction
 
 There is a new innovation in the financial industry called Neo-Banks: new aged digital only banks without physical branches.
 
