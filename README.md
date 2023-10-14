@@ -8,4 +8,7 @@
 
 [Week 3: Foodie-Fi](https://github.com/Mubarakbabs/SQL-Data-With-Danny-8-week-SQL-Challenge/tree/main/Week%203%20): MySQL
 
+[Week 4: Data Bank](https://github.com/Mubarakbabs/SQL-Data-With-Danny-8-week-SQL-Challenge/tree/main/Week%204): PostgreSQL
+
+
 
