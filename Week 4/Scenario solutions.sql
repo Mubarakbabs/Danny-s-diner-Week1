@@ -1,5 +1,26 @@
 -- Section C
 
+/*Problem: To test out a few different hypotheses - the Data Bank team wants to run an experiment where different groups of customers would be allocated data using 3 different options:
+
+Option 1: data is allocated based off the amount of money at the end of the previous month
+Option 2: data is allocated on the average amount of money kept in the account in the previous 30 days
+Option 3: data is updated real-time
+For this multi-part challenge question - you have been requested to generate the following data elements to help the Data Bank team estimate how much data will need to be provisioned for each option:
+
+running customer balance column that includes the impact each transaction
+customer balance at the end of each month
+minimum, average and maximum values of the running balance for each customer
+Using all of the data available - how much data would have been required for each option on a monthly basis?
+
+*/
+
+-- I solved the problems using the following steps
+-- Step 1: Create a temporary table that will be useful for all three scenarios
+-- Step 2: Write Option 1 query
+-- Step 3: Write Option 2 query
+-- Step 4: Write Option 3 query
+
+--Step 1:
 -- creating a customer_balances table that will allow us answer the questions based on customer_balances
 DROP TABLE IF EXISTS customer_balances;
 CREATE TEMPORARY TABLE customer_balances (
@@ -59,6 +80,7 @@ INSERT INTO customer_balances (customer_id, bal_date, balance)
 	 FIRST_VALUE(daily_balance) OVER (PARTITION BY gen_id, grp) balance
 	FROM null_balances
 	ORDER BY gen_id, generated_date;
+
 
 -- Option 1: allocate based on end of month balance
 -- note that we can't allocate negative data, so our data allocations will be 0 when the customer's account is overdrawn
@@ -129,14 +151,4 @@ SELECT
 	balance * (1 + (0.06/365)) data_allocation
 FROM customer_balances;
 
--- same as D. but with compound interest
 
-SELECT
-	customer_id,
-	bal_date,
-	balance,
-	0.06/365 AS daily_interest,
-	SUM(balance * (1 + (0.06/365))) OVER (PARTITION BY customer_id) data_allocation
-FROM customer_balances;
-
---prepare a powerpoint with key data
